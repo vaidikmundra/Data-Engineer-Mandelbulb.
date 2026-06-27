@@ -1,0 +1,133 @@
+======================================================================
+TASK 1: DATA INGESTION
+======================================================================
+
+--- sales_data ---
+Shape: (20, 6)
+  sale_id store_id product_id  quantity   sale_date  amount
+0    T001      S01        P01      10.0  2024-05-01  2500.0
+1    T002      S01        P02      20.0  2024-05-01   500.0
+2    T003      S02        P03       5.0  2024-05-01   900.0
+3    T004      S02        P04       NaN  2024-05-01   275.0
+4    T005      S03        P05      15.0  2024-05-02   300.0
+
+--- products ---
+Shape: (8, 4)
+  product_id             product_name       category  price
+0        P01      Aashirvaad Atta 5kg        Grocery    250
+1        P02            Tata Salt 1kg        Grocery     25
+2        P03           Surf Excel 1kg      Household    180
+3        P04  Colgate Toothpaste 100g  Personal Care     55
+4        P05     Parle-G Biscuit 200g         Snacks     20
+
+--- stores ---
+Shape: (7, 4)
+  store_id              store_name       city region
+0      S01      RetailMart Andheri     Mumbai   West
+1      S02    RetailMart Connaught      Delhi  North
+2      S03  RetailMart Koramangala  Bangalore  South
+3      S04    RetailMart Salt Lake    Kolkata   East
+4      S05   RetailMart Anna Nagar    Chennai  South
+
+--- Missing Value Summary ---
+sales_data:
+quantity    4
+amount      2
+dtype: int64
+products: no missing values
+stores: no missing values
+
+======================================================================
+TASK 2: DATA CLEANING
+======================================================================
+
+Duplicates found and removed: 2
+Cleaned DataFrame shape: (16, 6)
+
+Data types after cleaning:
+sale_id                  str
+store_id                 str
+product_id               str
+quantity               int64
+sale_date     datetime64[us]
+amount               float64
+dtype: object
+
+======================================================================
+TASK 3: DATA TRANSFORMATION
+======================================================================
+
+--- Final Merged DataFrame ---
+   sale_id store_id product_id  ...                store_name       city  region
+0     T001      S01        P01  ...        RetailMart Andheri     Mumbai    West
+1     T002      S01        P02  ...        RetailMart Andheri     Mumbai    West
+2     T003      S02        P03  ...      RetailMart Connaught      Delhi   North
+3     T004      S02        P04  ...      RetailMart Connaught      Delhi   North
+4     T005      S03        P05  ...    RetailMart Koramangala  Bangalore   South
+5     T007      S04        P07  ...      RetailMart Salt Lake    Kolkata    East
+6     T008      S04        P08  ...      RetailMart Salt Lake    Kolkata    East
+7     T009      S05        P01  ...     RetailMart Anna Nagar    Chennai   South
+8     T010      S05        P02  ...     RetailMart Anna Nagar    Chennai   South
+9     T011      S06        P03  ...  RetailMart Banjara Hills  Hyderabad   South
+10    T012      S06        P04  ...  RetailMart Banjara Hills  Hyderabad   South
+11    T013      S07        P05  ...      RetailMart Vastrapur  Ahmedabad    West
+12    T014      S07        P06  ...      RetailMart Vastrapur  Ahmedabad    West
+13    T015      S01        P07  ...        RetailMart Andheri     Mumbai    West
+14    T017      S03        P01  ...    RetailMart Koramangala  Bangalore   South
+15    T018      S04        P02  ...      RetailMart Salt Lake    Kolkata    East
+
+[16 rows x 12 columns]
+
+Mean total_revenue: 770.62
+Max total_revenue:  2500.00
+Min total_revenue:  0.00
+
+--- Total Revenue per City (descending) ---
+city
+Mumbai       3420
+Bangalore    2550
+Chennai      1500
+Kolkata      1410
+Ahmedabad    1280
+Hyderabad    1270
+Delhi         900
+Name: total_revenue, dtype: int64
+
+======================================================================
+TASK 4: DATA LOADING (SQL)
+======================================================================
+
+Loaded 16 rows into 'retail_sales' table in /home/claude/retail_pipeline/retail.db
+
+--- Top 3 Best-Selling Products (by quantity) ---
+           product_name  total_quantity_sold
+0  Parle-G Biscuit 200g                   40
+1         Tata Salt 1kg                   38
+2   Aashirvaad Atta 5kg                   25
+
+======================================================================
+TASK 5: REPORTING & INSIGHTS
+======================================================================
+
+--- Total Revenue per Store per Day ---
+                 store_name   sale_date  daily_revenue
+0        RetailMart Andheri  2024-05-01           3000
+1      RetailMart Connaught  2024-05-01            900
+2    RetailMart Koramangala  2024-05-02            300
+3      RetailMart Salt Lake  2024-05-02            960
+4     RetailMart Anna Nagar  2024-05-03           1500
+5  RetailMart Banjara Hills  2024-05-03           1270
+6        RetailMart Andheri  2024-05-04            420
+7      RetailMart Vastrapur  2024-05-04           1280
+8    RetailMart Koramangala  2024-05-05           2250
+9      RetailMart Salt Lake  2024-05-05            450
+
+--- SUMMARY REPORT ---
+Total number of transactions : 16
+Total revenue                : 12,330.00
+Top selling city             : Mumbai
+Top selling product          : Parle-G Biscuit 200g
+
+======================================================================
+PIPELINE COMPLETED SUCCESSFULLY
+======================================================================

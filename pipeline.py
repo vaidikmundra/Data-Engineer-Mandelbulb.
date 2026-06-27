@@ -1,24 +1,14 @@
-"""
-RetailMart Data Pipeline
-Junior Data Engineer - Technical Assignment
 
-This script implements the full pipeline:
-Load -> Clean -> Transform -> Load to DB -> Report
-with basic error handling.
-"""
 
 import pandas as pd
 import numpy as np
 import sqlite3
 import os
 
-DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+DATA_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "retail.db")
 
 
-# ---------------------------------------------------------------------------
-# TASK 1: DATA INGESTION
-# ---------------------------------------------------------------------------
 def load_data():
     """Load the three source CSV files into pandas DataFrames."""
     sales_path = os.path.join(DATA_DIR, "sales_data.csv")
@@ -49,10 +39,6 @@ def load_data():
 
     return sales_df, products_df, stores_df
 
-
-# ---------------------------------------------------------------------------
-# TASK 2: DATA CLEANING
-# ---------------------------------------------------------------------------
 def clean_data(sales_df):
     """Remove duplicates, handle missing values, fix data types."""
     print("\n" + "=" * 70)
@@ -81,9 +67,6 @@ def clean_data(sales_df):
     return sales_df
 
 
-# ---------------------------------------------------------------------------
-# TASK 3: DATA TRANSFORMATION
-# ---------------------------------------------------------------------------
 def transform_data(sales_df, products_df, stores_df):
     """Merge all dataframes and compute revenue metrics."""
     print("\n" + "=" * 70)
@@ -114,9 +97,6 @@ def transform_data(sales_df, products_df, stores_df):
     return merged_df
 
 
-# ---------------------------------------------------------------------------
-# TASK 4: DATA LOADING (SQL)
-# ---------------------------------------------------------------------------
 def load_to_sql(merged_df):
     """Load the final merged dataframe into a SQLite database."""
     print("\n" + "=" * 70)
@@ -145,9 +125,6 @@ def load_to_sql(merged_df):
     return query_top_products, top_products
 
 
-# ---------------------------------------------------------------------------
-# TASK 5: REPORTING & INSIGHTS
-# ---------------------------------------------------------------------------
 def generate_report(merged_df):
     """SQL query for revenue per store per day + Python summary report."""
     print("\n" + "=" * 70)
@@ -182,10 +159,6 @@ def generate_report(merged_df):
 
     return query_store_day, store_day_revenue
 
-
-# ---------------------------------------------------------------------------
-# TASK 6: PIPELINE & ERROR HANDLING
-# ---------------------------------------------------------------------------
 def run_pipeline():
     """Run the full pipeline end-to-end with error handling."""
     try:
